@@ -1,11 +1,15 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
+import * as process from 'node:process';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 @Module({
   imports: [
     MongooseModule.forRoot(
-      'mongodb+srv://admin:naqmiw532UEerKpn@cluster0.mtdmxex.mongodb.net/myapp?retryWrites=true&w=majority',
+      process.env.MONGODB_URI || 'mongodb://localhost:27017',
       {
         dbName: 'task-manager',
       },
