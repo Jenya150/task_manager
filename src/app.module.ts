@@ -1,29 +1,18 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TelegrafModule } from 'nestjs-telegraf';
+import { MongooseModule } from '@nestjs/mongoose';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: '.env',
-    }),
-    TelegrafModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: function async (configService: ConfigService){
-        const token = configService.get<string>('TELEGRAM_TOKEN');
-        if(!token) {
-          throw Error ('TELEGRAM_TOKEN variable is invalidated.')
-        }
-        return {
-          token: token,
-        };
+    MongooseModule.forRoot(
+      'mongodb+srv://admin:naqmiw532UEerKpn@cluster0.mtdmxex.mongodb.net/myapp?retryWrites=true&w=majority',
+      {
+        dbName: 'task-manager',
       },
-      inject: [ConfigService],
-    })
+    ),
+    UserModule,
   ],
-  providers: [AppController, AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
