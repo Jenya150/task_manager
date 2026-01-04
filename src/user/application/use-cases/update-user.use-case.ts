@@ -1,9 +1,9 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import {
   USER_REPOSITORY,
   type UserRepositoryPort,
 } from '../ports/user.repository.port';
-import { UsernameIsInvalidError, UsernameIsRequiredError, UserNotFoundError } from '../../domain/errors';
+import { UserNotFoundError } from '../../domain/errors';
 
 export interface UpdateUserDto {
   username?: string;
