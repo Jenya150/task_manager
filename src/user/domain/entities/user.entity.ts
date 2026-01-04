@@ -3,9 +3,9 @@ import { UserEmail } from '../value-objects/user-email.vo';
 import { UserUsername } from '../value-objects/user-username.vo';
 
 import {
-  ActiveProjectsLimitError,
+  ActiveProjectsLimitError, EmailIsInvalidError,
   InvalidProjectIdError,
-  ProjectAlreadyActiveError,
+  ProjectAlreadyActiveError, UsernameIsInvalidError,
   UsernameIsRequiredError,
 } from '../errors';
 
@@ -22,8 +22,18 @@ export class UserEntity {
 
   static create(username: string, email?: string): UserEntity {
     const newUsername = new UserUsername(username);
+    const newEmail = email ? new UserEmail(email) : null;
+
+    if (!username) {
+      throw new UsernameIsRequiredError('Username is required.');
+    }
+
     if (!newUsername.isValid()) {
-      throw new UsernameIsRequiredError('Username is invalid');
+      throw new UsernameIsInvalidError('Username is invalid.');
+    }
+
+    if (email && !newEmail?.isValid()) {
+      throw new EmailIsInvalidError('Email is invalid.');
     }
 
     return new UserEntity(
@@ -68,16 +78,23 @@ export class UserEntity {
   updateUsername(username: string): void {
     const newUsername = new UserUsername(username);
     if (!newUsername.isValid()) {
-      throw new UsernameIsRequiredError('Username is invalid');
+      throw new UsernameIsInvalidError('Username is invalid');
     }
     this.username = newUsername;
     this.updatedAt = new Date();
   }
 
   updateEmail(email: string | null): void {
-    email == null
-      ? (this.email = undefined)
-      : (this.email = new UserEmail(email));
+    if (!email) {
+      this.email = undefined;
+      this.updatedAt = new Date();
+      return;
+    }
+    const newEmail = new UserEmail(email);
+    if (!newEmail.isValid()) {
+      throw new EmailIsInvalidError('Email is invalid.');
+    }
+    this.email = newEmail;
     this.updatedAt = new Date();
   }
 

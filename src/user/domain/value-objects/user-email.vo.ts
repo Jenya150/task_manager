@@ -4,18 +4,19 @@ export class UserEmail {
   private readonly value: string | undefined;
 
   constructor(email: string | null) {
-    if (email == null) {
-      this.value = undefined;
-    } else {
-      if (!this.isValid(email)) {
-        throw new Error('Invalid email format');
-      }
+    if (email) {
       this.value = email;
+    } else {
+      this.value = undefined;
     }
   }
 
-  private isValid(email: string): boolean {
-    return EmailValidator.validate(email);
+  isValid(): boolean {
+    if (!this.value) {
+      return true;
+    }
+
+    return EmailValidator.validate(this.value);
   }
 
   getValue(): string | undefined {

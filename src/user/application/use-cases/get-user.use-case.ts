@@ -3,6 +3,7 @@ import {
   USER_REPOSITORY,
   type UserRepositoryPort,
 } from '../ports/user.repository.port';
+import { UserNotFoundError } from '../../domain/errors';
 
 @Injectable()
 export class GetUserUseCase {
@@ -14,7 +15,7 @@ export class GetUserUseCase {
   async execute(id: string) {
     const user = await this.userRepository.findByUUID(id);
     if (!user) {
-      throw new NotFoundException('User not found.');
+      throw new UserNotFoundError('User not found.');
     }
 
     return user;

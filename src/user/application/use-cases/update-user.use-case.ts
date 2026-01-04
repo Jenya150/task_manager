@@ -3,7 +3,7 @@ import {
   USER_REPOSITORY,
   type UserRepositoryPort,
 } from '../ports/user.repository.port';
-import { UsernameIsRequiredError } from '../../domain/errors';
+import { UsernameIsInvalidError, UsernameIsRequiredError, UserNotFoundError } from '../../domain/errors';
 
 export interface UpdateUserDto {
   username?: string;
@@ -21,20 +21,17 @@ export class UpdateUserUseCase {
     const user = await this.userRepository.findByUUID(id);
 
     if (!user) {
-      throw new NotFoundException('User not found.');
+      throw new UserNotFoundError('User not found.');
     }
 
     if (dto.username !== undefined) {
-      try {
-        user.updateUsername(dto.username);
-      } catch (err) {
-        throw new UsernameIsRequiredError(err?.message);
-      }
+      user.updateUsername(dto.username);
     }
 
     if (dto.email !== undefined) {
       user.updateEmail(dto.email);
     }
+
     return this.userRepository.update(user);
   }
 }
