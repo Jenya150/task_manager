@@ -1,6 +1,6 @@
-import { UserRepositoryPort } from '../../../src/user/application/ports/user.repository.port';
-import { ListUsersUseCase } from '../../../src/user/application/use-cases/list-users.use-case';
-import { UserEntity } from '../../../src/user/domain/entities/user.entity';
+import { UserRepositoryPort } from '../../../src/users/application/ports/user.repository.port';
+import { ListUsersUseCase } from '../../../src/users/application/use-cases/list-users.use-case';
+import { UserEntity } from '../../../src/users/domain/entities/user.entity';
 
 const userRepoMock: UserRepositoryPort = {
   save: jest.fn(),
@@ -10,7 +10,7 @@ const userRepoMock: UserRepositoryPort = {
   delete: jest.fn()
 }
 
-describe('ListUsersUseCase', () => {
+describe('List users use case', () => {
   let useCase: ListUsersUseCase;
 
   beforeEach(() => {

@@ -1,7 +1,7 @@
-import { UserRepositoryPort } from '../../../src/user/application/ports/user.repository.port';
-import { CreateUserUseCase } from '../../../src/user/application/use-cases/create-user.use-case';
-import { UserEntity } from '../../../src/user/domain/entities/user.entity';
-import { EmailIsInvalidError, UsernameIsInvalidError, UsernameIsRequiredError } from '../../../src/user/domain/errors';
+import { UserRepositoryPort } from '../../../src/users/application/ports/user.repository.port';
+import { CreateUserUseCase } from '../../../src/users/application/use-cases/create-user.use-case';
+import { UserEntity } from '../../../src/users/domain/entities/user.entity';
+import { EmailIsInvalidError, UsernameIsInvalidError, UsernameIsRequiredError } from '../../../src/users/domain/errors';
 
 const userRepoMock: UserRepositoryPort = {
   save: jest.fn(),
@@ -11,7 +11,7 @@ const userRepoMock: UserRepositoryPort = {
   delete: jest.fn()
 }
 
-describe('CreateUserUseCase', () => {
+describe('Create users use case', () => {
   let useCase: CreateUserUseCase;
 
   beforeEach(() => {
@@ -19,7 +19,7 @@ describe('CreateUserUseCase', () => {
     useCase = new CreateUserUseCase(userRepoMock);
   });
 
-  test('should create user when username is valid and email is not provided', async () => {
+  test('should create users when username is valid and email is not provided', async () => {
     const dto = { username: '123' };
 
     const savedUser = UserEntity.create('123');
@@ -33,7 +33,7 @@ describe('CreateUserUseCase', () => {
     expect(result?.getEmail()).toBeUndefined();
   });
 
-  test('should create user when username and email are valid', async () => {
+  test('should create users when username and email are valid', async () => {
     const dto = { username: 'testName', email: 'test@example.com' };
 
     const savedUser = UserEntity.create(dto.username, dto.email);

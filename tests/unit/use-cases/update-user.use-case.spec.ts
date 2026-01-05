@@ -1,7 +1,7 @@
-import { UserRepositoryPort } from '../../../src/user/application/ports/user.repository.port';
-import { UpdateUserUseCase } from '../../../src/user/application/use-cases/update-user.use-case';
-import { UserEntity } from '../../../src/user/domain/entities/user.entity';
-import { EmailIsInvalidError, UsernameIsInvalidError, UserNotFoundError } from '../../../src/user/domain/errors';
+import { UserRepositoryPort } from '../../../src/users/application/ports/user.repository.port';
+import { UpdateUserUseCase } from '../../../src/users/application/use-cases/update-user.use-case';
+import { UserEntity } from '../../../src/users/domain/entities/user.entity';
+import { EmailIsInvalidError, UsernameIsInvalidError, UserNotFoundError } from '../../../src/users/domain/errors';
 
 const userRepoMock: UserRepositoryPort = {
   save: jest.fn(),
@@ -11,7 +11,7 @@ const userRepoMock: UserRepositoryPort = {
   delete: jest.fn()
 }
 
-describe('UpdateUserUseCase', () => {
+describe('Update users use case', () => {
   let useCase: UpdateUserUseCase;
 
   let savedUser: UserEntity;
@@ -28,7 +28,7 @@ describe('UpdateUserUseCase', () => {
     userRepoMock.update = jest.fn().mockResolvedValue(savedUser);
   });
 
-  test('should return an user without updates', async () => {
+  test('should return an users without updates', async () => {
     const dto = {}
 
     const result = await useCase.execute(savedUser.getUUID().getValue(), dto)
@@ -40,7 +40,7 @@ describe('UpdateUserUseCase', () => {
     expect(result.getUpdatedAt().getTime()).toBe(oldUpdatedAt.getTime());
   })
 
-  test('should return an updated user', async () => {
+  test('should return an updated users', async () => {
     const dto = {username: 'NewTestUsername', email: 'NewTestEmail@mail.com'};
 
     await new Promise(r => setTimeout(r, 1))
@@ -54,7 +54,7 @@ describe('UpdateUserUseCase', () => {
     expect(result.getUpdatedAt().getTime()).toBeGreaterThan(oldUpdatedAt.getTime());
   })
 
-  test('should return an user without email', async () => {
+  test('should return an users without email', async () => {
     const dto = { email: null }
 
     await new Promise(r => setTimeout(r, 1))
@@ -68,7 +68,7 @@ describe('UpdateUserUseCase', () => {
     expect(result.getUpdatedAt().getTime()).toBeGreaterThan(oldUpdatedAt.getTime());
   })
 
-  test('should throw UserNotFoundError when there is no user', async () => {
+  test('should throw UserNotFoundError when there is no users', async () => {
     const dto = { username: 'NewTestUsername' }
 
     userRepoMock.findByUUID = jest.fn().mockResolvedValue(null);

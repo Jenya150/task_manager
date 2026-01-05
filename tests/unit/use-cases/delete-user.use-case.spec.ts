@@ -1,6 +1,6 @@
-import { UserRepositoryPort } from '../../../src/user/application/ports/user.repository.port';
-import { DeleteUserUseCase } from '../../../src/user/application/use-cases/delete-user.use-case';
-import { UserEntity } from '../../../src/user/domain/entities/user.entity';
+import { UserRepositoryPort } from '../../../src/users/application/ports/user.repository.port';
+import { DeleteUserUseCase } from '../../../src/users/application/use-cases/delete-user.use-case';
+import { UserEntity } from '../../../src/users/domain/entities/user.entity';
 
 const userRepoMock: UserRepositoryPort = {
   save: jest.fn(),
@@ -10,7 +10,7 @@ const userRepoMock: UserRepositoryPort = {
   delete: jest.fn()
 }
 
-describe('DeleteUserUseCase', () => {
+describe('Delete users use case', () => {
   let useCase: DeleteUserUseCase;
 
   beforeEach(() => {
@@ -18,7 +18,7 @@ describe('DeleteUserUseCase', () => {
     useCase = new DeleteUserUseCase(userRepoMock);
   });
 
-  test('should delete the user', async () => {
+  test('should delete the users', async () => {
     const savedUser = UserEntity.create('TestUsername');
 
     userRepoMock.delete = jest.fn().mockResolvedValue(true);
@@ -32,7 +32,7 @@ describe('DeleteUserUseCase', () => {
   test('should do nothing', async () => {
     userRepoMock.delete = jest.fn().mockResolvedValue(false);
 
-    const result = await useCase.execute('no user');
+    const result = await useCase.execute('no users');
 
     expect(userRepoMock.delete).toHaveBeenCalledTimes(1);
     expect(result).toBeFalsy();
