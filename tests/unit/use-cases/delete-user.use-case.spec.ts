@@ -7,8 +7,8 @@ const userRepoMock: UserRepositoryPort = {
   findByUUID: jest.fn(),
   findAll: jest.fn(),
   update: jest.fn(),
-  delete: jest.fn()
-}
+  delete: jest.fn(),
+};
 
 describe('Delete users use case', () => {
   let useCase: DeleteUserUseCase;
@@ -27,7 +27,7 @@ describe('Delete users use case', () => {
 
     expect(userRepoMock.delete).toHaveBeenCalledTimes(1);
     expect(result).toBeTruthy();
-  })
+  });
 
   test('should do nothing', async () => {
     userRepoMock.delete = jest.fn().mockResolvedValue(false);
@@ -36,6 +36,5 @@ describe('Delete users use case', () => {
 
     expect(userRepoMock.delete).toHaveBeenCalledTimes(1);
     expect(result).toBeFalsy();
-  })
-
+  });
 });

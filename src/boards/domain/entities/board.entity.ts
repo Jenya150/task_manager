@@ -23,13 +23,17 @@ export class BoardEntity {
     private description?: BoardDescription,
   ) {}
 
-  static create(title: string, uuidOfUserOwner: string, description?: string): BoardEntity {
+  static create(
+    title: string,
+    uuidOfUserOwner: string,
+    description?: string,
+  ): BoardEntity {
     const newBoardTittle = new BoardTittle(title);
-    const newBoardOfUserOwnerUUID = new BoardUserOwnerUuid(uuidOfUserOwner)
+    const newBoardOfUserOwnerUUID = new BoardUserOwnerUuid(uuidOfUserOwner);
     const newBoardDescription = new BoardDescription(description);
 
-    const boardUsers = new Map<string, BoardUsersRoles>()
-    boardUsers.set(uuidOfUserOwner, new BoardUsersRoles('OWNER'))
+    const boardUsers = new Map<string, BoardUsersRoles>();
+    boardUsers.set(uuidOfUserOwner, new BoardUsersRoles('OWNER'));
 
     const now = new Date();
 
@@ -40,7 +44,7 @@ export class BoardEntity {
       boardUsers,
       now,
       now,
-      description ? newBoardDescription : undefined
+      description ? newBoardDescription : undefined,
     );
   }
 
@@ -94,7 +98,9 @@ export class BoardEntity {
   }
 
   addUserToBoard(idOfUser: string, role?: string): void {
-    const roleOfUser = role ? new BoardUsersRoles(role) : new BoardUsersRoles('USER')
+    const roleOfUser = role
+      ? new BoardUsersRoles(role)
+      : new BoardUsersRoles('USER');
 
     if (this.users.get(idOfUser)) {
       throw new UserAlreadyAddedError('This user is already added.');
@@ -108,11 +114,11 @@ export class BoardEntity {
       throw new OwnerAlreadyExistsError('Owner is already exists.');
     }
 
-    this.users.set(idOfUser, roleOfUser)
+    this.users.set(idOfUser, roleOfUser);
   }
 
   changeUserRoleInBoard(idOfUser: string, role: string): void {
-    const roleOfUser = new BoardUsersRoles(role)
+    const roleOfUser = new BoardUsersRoles(role);
     const user = this.users.get(idOfUser);
     if (!user) {
       throw new UserNotFoundError('User not founded.');
@@ -122,7 +128,7 @@ export class BoardEntity {
       throw new OwnerAlreadyExistsError('Owner is already exists.');
     }
 
-    this.users.set(idOfUser, roleOfUser)
+    this.users.set(idOfUser, roleOfUser);
   }
 
   removeUserFromBoard(idOfUser: string): void {
@@ -136,7 +142,6 @@ export class BoardEntity {
     }
 
     this.users.delete(idOfUser);
-
   }
 
   getAccountAge(): number {

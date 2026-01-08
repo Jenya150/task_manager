@@ -5,13 +5,18 @@ export class BoardUsersRoles {
 
   constructor(role: string) {
     this.value = role;
-    if(!this.isValid()) {
+    if (!this.isValid()) {
       throw new RoleIsInvalidError('Invalid role');
     }
   }
 
   isValid(): boolean {
-    return this.value === 'OWNER' || this.value === 'ADMIN' || this.value === 'USER' || this.value === 'VIEWER';
+    return (
+      this.value === 'OWNER' ||
+      this.value === 'ADMIN' ||
+      this.value === 'USER' ||
+      this.value === 'VIEWER'
+    );
   }
 
   getValue(): string {

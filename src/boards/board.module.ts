@@ -3,7 +3,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { BoardController } from './presentation/boards.controller';
 
-import { BoardDocument, BoardMongoSchema } from './infrastucture-adapaters/mongo/board.mongo.schema';
+import {
+  BoardDocument,
+  BoardMongoSchema,
+} from './infrastucture-adapaters/mongo/board.mongo.schema';
 
 import { MongoBoardRepository } from './infrastucture-adapaters/mongo/mongo-board-repository.service';
 import { BOARD_REPOSITORY } from './application/ports/board.repository.port';

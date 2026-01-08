@@ -8,8 +8,8 @@ const userRepoMock: UserRepositoryPort = {
   findByUUID: jest.fn(),
   findAll: jest.fn(),
   update: jest.fn(),
-  delete: jest.fn()
-}
+  delete: jest.fn(),
+};
 
 describe('Get users use case', () => {
   let useCase: GetUserUseCase;
@@ -17,7 +17,7 @@ describe('Get users use case', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     useCase = new GetUserUseCase(userRepoMock);
-  })
+  });
 
   test('should find and return users by id', async () => {
     const savedUser = UserEntity.create('TestUsername');
@@ -26,16 +26,20 @@ describe('Get users use case', () => {
 
     const result = await useCase.execute(savedUser.getUUID().getValue());
 
-    expect(userRepoMock.findByUUID).toHaveBeenCalledTimes(1)
-    expect(userRepoMock.findByUUID).toHaveBeenCalledWith(savedUser.getUUID().getValue());
-    expect(result).toBe(savedUser)
-  })
+    expect(userRepoMock.findByUUID).toHaveBeenCalledTimes(1);
+    expect(userRepoMock.findByUUID).toHaveBeenCalledWith(
+      savedUser.getUUID().getValue(),
+    );
+    expect(result).toBe(savedUser);
+  });
 
   test('should throw UserNotFoundError when users not found', async () => {
     userRepoMock.findByUUID = jest.fn().mockResolvedValue(null);
 
-    await expect(useCase.execute('no users')).rejects.toThrow(UserNotFoundError);
+    await expect(useCase.execute('no users')).rejects.toThrow(
+      UserNotFoundError,
+    );
     expect(userRepoMock.findByUUID).toHaveBeenCalledTimes(1);
     expect(userRepoMock.findByUUID).toHaveBeenCalledWith('no users');
-  })
-})
+  });
+});

@@ -1,9 +1,23 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
-import { type CreateBoardDto, CreateBoardUseCase } from '../application/use-cases/create-board.use-case';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
+import {
+  type CreateBoardDto,
+  CreateBoardUseCase,
+} from '../application/use-cases/create-board.use-case';
 import { GetBoardUseCase } from '../application/use-cases/get-board.use-case';
 import { ListBoardsUseCase } from '../application/use-cases/list-boards.use-case';
 import { DeleteBoardUseCase } from '../application/use-cases/delete-board.use-case';
-import { type UpdateBoardDto, UpdateBoardUseCase } from '../application/use-cases/update-board.use-case';
+import {
+  type UpdateBoardDto,
+  UpdateBoardUseCase,
+} from '../application/use-cases/update-board.use-case';
 import { BoardEntity } from '../domain/entities/board.entity';
 import { BoardMapper } from './board.mapper';
 import { AddUserToBoardUseCase } from '../application/use-cases/add-user-to-board.use-case';
@@ -20,7 +34,7 @@ export class BoardController {
     private readonly updateBoardUseCase: UpdateBoardUseCase,
     private readonly addUserToBoardUseCase: AddUserToBoardUseCase,
     private readonly changeUserRoleBoardUseCase: ChangeUserRoleAtBoardUseCase,
-    private readonly removeUserFromBoardUseCase: RemoveUserFromBoardUseCase
+    private readonly removeUserFromBoardUseCase: RemoveUserFromBoardUseCase,
   ) {}
   @Post()
   async createBoard(@Body() body: CreateBoardDto) {
@@ -49,17 +63,33 @@ export class BoardController {
   }
 
   @Patch(':id/addUser/:userId')
-  async addUserToBoard(@Param('id') boardId: string, @Param('userId') userId: string, @Body() body?: { role?: string }) {
-    const updatedBoard = await this.addUserToBoardUseCase.execute(boardId, userId, body?.role);
+  async addUserToBoard(
+    @Param('id') boardId: string,
+    @Param('userId') userId: string,
+    @Body() body?: { role?: string },
+  ) {
+    const updatedBoard = await this.addUserToBoardUseCase.execute(
+      boardId,
+      userId,
+      body?.role,
+    );
 
-    return BoardMapper.fromEntity(updatedBoard)
+    return BoardMapper.fromEntity(updatedBoard);
   }
 
   @Patch(':id/changeUserRole/:userId')
-  async editUserRoleInBoard(@Param('id') boardId: string, @Param('userId') userId: string, @Body() body: { role: string }) {
-    const updatedBoard = await this.changeUserRoleBoardUseCase.execute(boardId, userId, body.role)
+  async editUserRoleInBoard(
+    @Param('id') boardId: string,
+    @Param('userId') userId: string,
+    @Body() body: { role: string },
+  ) {
+    const updatedBoard = await this.changeUserRoleBoardUseCase.execute(
+      boardId,
+      userId,
+      body.role,
+    );
 
-    return BoardMapper.fromEntity(updatedBoard)
+    return BoardMapper.fromEntity(updatedBoard);
   }
 
   @Delete(':id')
@@ -68,9 +98,15 @@ export class BoardController {
   }
 
   @Delete(':id/removeUserFromBoard/:userId')
-  async removeUserRoleFromBoard(@Param('id') boardId: string, @Param('userId') userId: string) {
-    const updatedBoard = await this.removeUserFromBoardUseCase.execute(boardId, userId)
+  async removeUserRoleFromBoard(
+    @Param('id') boardId: string,
+    @Param('userId') userId: string,
+  ) {
+    const updatedBoard = await this.removeUserFromBoardUseCase.execute(
+      boardId,
+      userId,
+    );
 
-    return BoardMapper.fromEntity(updatedBoard)
+    return BoardMapper.fromEntity(updatedBoard);
   }
 }

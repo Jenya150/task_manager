@@ -1,5 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { BOARD_REPOSITORY, type BoardRepositoryPort } from '../ports/board.repository.port';
+import {
+  BOARD_REPOSITORY,
+  type BoardRepositoryPort,
+} from '../ports/board.repository.port';
 
 @Injectable()
 export class ListBoardsUseCase {

@@ -1,5 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { BOARD_REPOSITORY, type BoardRepositoryPort } from '../ports/board.repository.port';
+import {
+  BOARD_REPOSITORY,
+  type BoardRepositoryPort,
+} from '../ports/board.repository.port';
 import { BoardEntity } from '../../domain/entities/board.entity';
 
 export interface CreateBoardDto {
@@ -20,7 +23,11 @@ export class CreateBoardUseCase {
       dto.description = undefined;
     }
 
-    const board = BoardEntity.create(dto.title, dto.uuidOfUserOwner, dto.description);
+    const board = BoardEntity.create(
+      dto.title,
+      dto.uuidOfUserOwner,
+      dto.description,
+    );
     return this.boardRepository.save(board);
   }
 }

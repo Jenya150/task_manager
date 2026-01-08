@@ -9,7 +9,7 @@ export class UserEmail {
       this.value = email;
 
       if (!this?.isValid()) {
-        this.value = undefined
+        this.value = undefined;
         throw new EmailIsInvalidError('Email is invalid.');
       }
     } else {

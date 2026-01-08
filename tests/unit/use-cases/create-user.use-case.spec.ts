@@ -1,15 +1,19 @@
 import { UserRepositoryPort } from '../../../src/users/application/ports/user.repository.port';
 import { CreateUserUseCase } from '../../../src/users/application/use-cases/create-user.use-case';
 import { UserEntity } from '../../../src/users/domain/entities/user.entity';
-import { EmailIsInvalidError, UsernameIsInvalidError, UsernameIsRequiredError } from '../../../src/users/domain/errors';
+import {
+  EmailIsInvalidError,
+  UsernameIsInvalidError,
+  UsernameIsRequiredError,
+} from '../../../src/users/domain/errors';
 
 const userRepoMock: UserRepositoryPort = {
   save: jest.fn(),
   findByUUID: jest.fn(),
   findAll: jest.fn(),
   update: jest.fn(),
-  delete: jest.fn()
-}
+  delete: jest.fn(),
+};
 
 describe('Create users use case', () => {
   let useCase: CreateUserUseCase;
@@ -44,13 +48,15 @@ describe('Create users use case', () => {
     expect(userRepoMock.save).toHaveBeenCalledTimes(1);
     expect(result).toBeInstanceOf(UserEntity);
     expect(result?.getUsername().getValue()).toBe('testName');
-    expect(result?.getEmail()?.getValue()).toBe("test@example.com");
+    expect(result?.getEmail()?.getValue()).toBe('test@example.com');
   });
 
   test('should throw UsernameIsRequiredError when it is not username', async () => {
     const dto = { email: 'test@example.com' };
 
-    await expect(useCase.execute(dto as any)).rejects.toThrow(UsernameIsRequiredError);
+    await expect(useCase.execute(dto as any)).rejects.toThrow(
+      UsernameIsRequiredError,
+    );
     expect(userRepoMock.save).not.toHaveBeenCalled();
   });
 

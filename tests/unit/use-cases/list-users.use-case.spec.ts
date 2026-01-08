@@ -7,14 +7,14 @@ const userRepoMock: UserRepositoryPort = {
   findByUUID: jest.fn(),
   findAll: jest.fn(),
   update: jest.fn(),
-  delete: jest.fn()
-}
+  delete: jest.fn(),
+};
 
 describe('List users use case', () => {
   let useCase: ListUsersUseCase;
 
   beforeEach(() => {
-    jest.clearAllMocks()
+    jest.clearAllMocks();
     useCase = new ListUsersUseCase(userRepoMock);
   });
 
@@ -23,21 +23,23 @@ describe('List users use case', () => {
 
     const result = await useCase.execute();
 
-    expect(userRepoMock.findAll).toHaveBeenCalledTimes(1)
-    expect(userRepoMock.findAll).toHaveBeenCalledWith()
+    expect(userRepoMock.findAll).toHaveBeenCalledTimes(1);
+    expect(userRepoMock.findAll).toHaveBeenCalledWith();
     expect(result).toEqual([]);
-  })
+  });
 
   test('should return empty list of users entity', async () => {
     const savedUser1 = UserEntity.create('TestUsername1', 'TestEmail@mail.com');
     const savedUser2 = UserEntity.create('TestUsername2', 'TestEmail@mail.com');
 
-    userRepoMock.findAll = jest.fn().mockResolvedValue([savedUser1, savedUser2]);
+    userRepoMock.findAll = jest
+      .fn()
+      .mockResolvedValue([savedUser1, savedUser2]);
 
     const result = await useCase.execute();
 
-    expect(userRepoMock.findAll).toHaveBeenCalledTimes(1)
-    expect(result).toHaveLength(2)
-    expect(result.every(user => user instanceof UserEntity)).toBeTruthy();
-  })
-})
+    expect(userRepoMock.findAll).toHaveBeenCalledTimes(1);
+    expect(result).toHaveLength(2);
+    expect(result.every((user) => user instanceof UserEntity)).toBeTruthy();
+  });
+});

@@ -28,12 +28,19 @@ export class BoardDocument {
   @Prop({
     type: [
       {
-        uuid: { required: true, type: String },
-        role: { required: true, type: String, enum: ['OWNER', 'ADMIN', 'USER', 'VIEWER'] },
-      }
+        uuid: {
+          required: true,
+          type: String
+        },
+        role: {
+          required: true,
+          type: String,
+          enum: ['OWNER', 'ADMIN', 'USER', 'VIEWER'],
+        },
+      },
     ],
   })
-  users: IUsersInBoard[]
+  users: IUsersInBoard[];
 
   @Prop()
   readonly createdAt: Date;

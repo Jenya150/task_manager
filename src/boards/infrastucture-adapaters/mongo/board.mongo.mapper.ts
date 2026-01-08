@@ -8,12 +8,17 @@ import { BoardUsersRoles } from '../../domain/value-objects/board-users-roles.vo
 
 export class BoardMongoMapper {
   static toEntity(board: BoardDocument): BoardEntity {
-    const description = board.description ? new BoardDescription(board.description) : undefined;
-    const users = board.users
+    const description = board.description
+      ? new BoardDescription(board.description)
+      : undefined;
+    const users = board.users;
     const usersMap = new Map<string, BoardUsersRoles>();
 
-    for(let index = 0; index < users.length; index++) {
-      usersMap.set(String(users[index].uuid), new BoardUsersRoles(String(users[index].role)))
+    for (let index = 0; index < users.length; index++) {
+      usersMap.set(
+        String(users[index].uuid),
+        new BoardUsersRoles(String(users[index].role)),
+      );
     }
 
     return new BoardEntity(
@@ -23,7 +28,7 @@ export class BoardMongoMapper {
       usersMap,
       board.createdAt,
       board.updatedAt,
-      description
+      description,
     );
   }
 }

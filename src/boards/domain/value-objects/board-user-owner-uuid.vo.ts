@@ -1,5 +1,8 @@
 import { isUUID } from 'class-validator';
-import { OwnerUserUUIDIsInvalidError, OwnerUserUUIDIsRequiredError } from '../errors';
+import {
+  OwnerUserUUIDIsInvalidError,
+  OwnerUserUUIDIsRequiredError,
+} from '../errors';
 
 export class BoardUserOwnerUuid {
   private readonly value: string;

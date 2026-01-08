@@ -1,5 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { BOARD_REPOSITORY, type BoardRepositoryPort } from '../ports/board.repository.port';
+import {
+  BOARD_REPOSITORY,
+  type BoardRepositoryPort,
+} from '../ports/board.repository.port';
 import { BoardNotFoundError } from '../../domain/errors';
 
 export interface UpdateBoardDto {

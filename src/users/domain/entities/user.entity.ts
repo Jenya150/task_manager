@@ -21,7 +21,7 @@ export class UserEntity {
 
   static create(username: string, email?: string): UserEntity {
     const newUsername = new UserUsername(username);
-    email ? new UserEmail(email) : undefined
+    email ? new UserEmail(email) : undefined;
 
     return new UserEntity(
       new UserUUID(),
@@ -30,7 +30,7 @@ export class UserEntity {
       [],
       new Date(),
       new Date(),
-      email ? new UserEmail(email): undefined,
+      email ? new UserEmail(email) : undefined,
     );
   }
 

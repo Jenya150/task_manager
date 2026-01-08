@@ -15,7 +15,9 @@ export class MongoBoardRepository implements BoardRepositoryPort {
   ) {}
 
   async save(board: BoardEntity) {
-    const boardDoc = await this.boardModel.findOne({ uuid: board.getUUID().getValue() });
+    const boardDoc = await this.boardModel.findOne({
+      uuid: board.getUUID().getValue(),
+    });
 
     if (!boardDoc) {
       const newBoard = await this.boardModel.create({
@@ -23,7 +25,10 @@ export class MongoBoardRepository implements BoardRepositoryPort {
         title: board.getTitle().getValue(),
         description: board.getDescription()?.getValue(),
         uuidOfUserOwner: board.getUuidOfUserOwner().getValue(),
-        users: Array.from(board.getUsers(), ([uuid, role]) => ({ uuid, role: role.getValue() })),
+        users: Array.from(board.getUsers(), ([uuid, role]) => ({
+          uuid,
+          role: role.getValue(),
+        })),
         createdAt: new Date(),
         updatedAt: new Date(),
       });
@@ -32,7 +37,10 @@ export class MongoBoardRepository implements BoardRepositoryPort {
     boardDoc.title = board.getTitle().getValue();
     boardDoc.description = board.getDescription()?.getValue();
     boardDoc.uuidOfUserOwner = board.getUuidOfUserOwner().getValue();
-    boardDoc.users = Array.from(board.getUsers(), ([uuid, role]) => ({ uuid, role: role.getValue() }));
+    boardDoc.users = Array.from(board.getUsers(), ([uuid, role]) => ({
+      uuid,
+      role: role.getValue(),
+    }));
     boardDoc.updatedAt = new Date();
 
     await boardDoc.save();
@@ -70,7 +78,8 @@ export class MongoBoardRepository implements BoardRepositoryPort {
 
     boardDoc.title = updatedBoardDoc.getTitle().getValue();
     boardDoc.uuidOfUserOwner = updatedBoardDoc.getUuidOfUserOwner().getValue();
-    boardDoc.description = updatedBoardDoc.getDescription()?.getValue() ?? undefined;
+    boardDoc.description =
+      updatedBoardDoc.getDescription()?.getValue() ?? undefined;
 
     const updatedBoard = await boardDoc.save();
     return BoardMongoMapper.toEntity(updatedBoard);

@@ -5,9 +5,10 @@ export class BoardDescription {
 
   constructor(description: string | undefined) {
     if (description) {
-      if (!this.isValid())
-      {
-        throw new DescriptionIsInvalidError('Description is invalid or too long');
+      if (!this.isValid()) {
+        throw new DescriptionIsInvalidError(
+          'Description is invalid or too long',
+        );
       }
 
       this.value = description;
@@ -21,7 +22,7 @@ export class BoardDescription {
       return true;
     }
 
-    return (this.value.length <= 100 && this.value.length > 0)
+    return this.value.length <= 100 && this.value.length > 0;
   }
 
   getValue(): string | undefined {
