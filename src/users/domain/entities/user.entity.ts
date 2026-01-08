@@ -1,12 +1,11 @@
-import { UserUUID } from '../value-objects/user-id.vo';
+import { UserUUID } from '../value-objects/user-uuid.vo';
 import { UserEmail } from '../value-objects/user-email.vo';
 import { UserUsername } from '../value-objects/user-username.vo';
 
 import {
-  ActiveProjectsLimitError, EmailIsInvalidError,
+  ActiveProjectsLimitError,
   InvalidProjectIdError,
-  ProjectAlreadyActiveError, UsernameIsInvalidError,
-  UsernameIsRequiredError,
+  ProjectAlreadyActiveError,
 } from '../errors';
 
 export class UserEntity {
@@ -22,19 +21,7 @@ export class UserEntity {
 
   static create(username: string, email?: string): UserEntity {
     const newUsername = new UserUsername(username);
-    const newEmail = email ? new UserEmail(email) : null;
-
-    if (!username) {
-      throw new UsernameIsRequiredError('Username is required.');
-    }
-
-    if (!newUsername.isValid()) {
-      throw new UsernameIsInvalidError('Username is invalid.');
-    }
-
-    if (email && !newEmail?.isValid()) {
-      throw new EmailIsInvalidError('Email is invalid.');
-    }
+    email ? new UserEmail(email) : undefined
 
     return new UserEntity(
       new UserUUID(),
@@ -43,7 +30,7 @@ export class UserEntity {
       [],
       new Date(),
       new Date(),
-      email ? new UserEmail(email) : undefined,
+      email ? new UserEmail(email): undefined,
     );
   }
 
@@ -76,11 +63,7 @@ export class UserEntity {
   }
 
   updateUsername(username: string): void {
-    const newUsername = new UserUsername(username);
-    if (!newUsername.isValid()) {
-      throw new UsernameIsInvalidError('Username is invalid');
-    }
-    this.username = newUsername;
+    this.username = new UserUsername(username);
     this.updatedAt = new Date();
   }
 
@@ -90,11 +73,8 @@ export class UserEntity {
       this.updatedAt = new Date();
       return;
     }
-    const newEmail = new UserEmail(email);
-    if (!newEmail.isValid()) {
-      throw new EmailIsInvalidError('Email is invalid.');
-    }
-    this.email = newEmail;
+
+    this.email = new UserEmail(email);
     this.updatedAt = new Date();
   }
 

@@ -23,9 +23,6 @@ import {
 import { UserMapper } from './user.mapper';
 import { UserEntity } from '../domain/entities/user.entity';
 
-import { BadRequestException } from '@nestjs/common';
-import { UsernameIsRequiredError } from '../domain/errors';
-
 @Controller('users')
 export class UserController {
   constructor(
@@ -38,14 +35,7 @@ export class UserController {
 
   @Post()
   async createUser(@Body() body: CreateUserDto) {
-    try {
-      return await this.createUserUseCase.execute(body);
-    } catch (err) {
-      if (err instanceof UsernameIsRequiredError) {
-        throw new BadRequestException(err.message);
-      }
-      throw err;
-    }
+    return await this.createUserUseCase.execute(body);
   }
 
   @Get(':id')
@@ -64,16 +54,9 @@ export class UserController {
 
   @Patch(':id')
   async updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
-    try {
-      const user = await this.updateUserUseCase.execute(id, body);
+    const user = await this.updateUserUseCase.execute(id, body);
 
-      return UserMapper.fromEntity(user);
-    } catch (err) {
-      if (err instanceof UsernameIsRequiredError) {
-        throw new BadRequestException(err.message);
-      }
-      throw err;
-    }
+    return UserMapper.fromEntity(user);
   }
 
   @Delete(':id')

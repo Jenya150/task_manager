@@ -1,4 +1,5 @@
 import * as EmailValidator from 'email-validator';
+import { EmailIsInvalidError } from '../errors';
 
 export class UserEmail {
   private readonly value: string | undefined;
@@ -6,6 +7,11 @@ export class UserEmail {
   constructor(email: string | null) {
     if (email) {
       this.value = email;
+
+      if (!this?.isValid()) {
+        this.value = undefined
+        throw new EmailIsInvalidError('Email is invalid.');
+      }
     } else {
       this.value = undefined;
     }

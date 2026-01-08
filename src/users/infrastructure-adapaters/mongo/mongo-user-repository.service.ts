@@ -11,6 +11,7 @@ import { UserRepositoryPort } from '../../application/ports/user.repository.port
 import { UserEntity } from '../../domain/entities/user.entity';
 import { UserMongoMapper } from './user.mongo.mapper';
 import { UserDocument } from './user.mongo.schema';
+import { UserNotFoundError } from '../../domain/errors';
 
 @Injectable()
 export class MongoUserRepository implements UserRepositoryPort {
@@ -45,6 +46,7 @@ export class MongoUserRepository implements UserRepositoryPort {
     if (!user) {
       return null;
     }
+
     return UserMongoMapper.toEntity(user);
   }
 
@@ -64,15 +66,15 @@ export class MongoUserRepository implements UserRepositoryPort {
       .exec();
 
     if (!userDoc) {
-      throw new NotFoundException("User doesn't exist.");
+      throw new UserNotFoundError("User doesn't exist.");
     }
 
     userDoc.email = updatedUserDoc.getEmail()?.getValue() ?? undefined;
     userDoc.username = updatedUserDoc.getUsername().getValue();
 
     try {
-      const updatedUserDoc = await userDoc.save();
-      return UserMongoMapper.toEntity(updatedUserDoc);
+      const updatedUser = await userDoc.save();
+      return UserMongoMapper.toEntity(updatedUser);
     } catch (err) {
       if (err?.code === 11000) {
         throw new BadRequestException('Email already exists.');

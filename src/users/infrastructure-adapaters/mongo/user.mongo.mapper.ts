@@ -1,6 +1,6 @@
 import { UserDocument } from './user.mongo.schema';
 import { UserEntity } from '../../domain/entities/user.entity';
-import { UserUUID } from '../../domain/value-objects/user-id.vo';
+import { UserUUID } from '../../domain/value-objects/user-uuid.vo';
 import { UserUsername } from '../../domain/value-objects/user-username.vo';
 import { UserEmail } from '../../domain/value-objects/user-email.vo';
 

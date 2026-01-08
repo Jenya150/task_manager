@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './users/user.module';
+import { BoardModule } from './boards/board.module';
 import * as process from 'node:process';
 import * as dotenv from 'dotenv';
 
@@ -15,6 +16,7 @@ dotenv.config();
       },
     ),
     UserModule,
+    BoardModule,
   ],
   controllers: [],
   providers: [],

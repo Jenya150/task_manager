@@ -16,7 +16,7 @@ import {
   UsernameIsInvalidError,
   EmailIsInvalidError
 )
-export class DomainExceptionFilter implements ExceptionFilter {
+export class DomainExceptionFilterForUsers implements ExceptionFilter {
   catch(exception: Error, host: ArgumentsHost): void {
     const response = host.switchToHttp().getResponse()//<DomainExceptionFilter>()
 
