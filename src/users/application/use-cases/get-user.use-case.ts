@@ -15,7 +15,7 @@ export class GetUserUseCase {
   async execute(id: string) {
     const user = await this.userRepository.findByUUID(id);
     if (!user) {
-      throw new UserNotFoundError('User not found.');
+      throw new UserNotFoundError('User not founded.');
     }
 
     return user;

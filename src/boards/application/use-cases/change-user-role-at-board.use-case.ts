@@ -15,6 +15,8 @@ export class ChangeUserRoleAtBoardUseCase {
       throw new BoardNotFoundError('Board not found.');
     }
 
-    return board.changeUserRoleInBoard(idOfUser, role);
+    board.changeUserRoleInBoard(idOfUser, role);
+    await this.boardRepository.save(board);
+    return board;
   }
 }

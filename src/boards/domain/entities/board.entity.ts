@@ -131,11 +131,12 @@ export class BoardEntity {
       throw new UserNotFoundError('User not founded.');
     }
 
-    if (this.getUsers().get(idOfUser) == new BoardUsersRoles('OWNER')) {
+    if (this.getUsers().get(idOfUser)?.equals(new BoardUsersRoles('OWNER'))) {
       throw new OwnerCannotBeRemovedError('Owner cannot be removed.');
     }
 
     this.users.delete(idOfUser);
+
   }
 
   getAccountAge(): number {

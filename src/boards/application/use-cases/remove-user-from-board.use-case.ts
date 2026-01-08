@@ -15,6 +15,8 @@ export class RemoveUserFromBoardUseCase {
       throw new BoardNotFoundError('Board not found.');
     }
 
-    return board.removeUserFromBoard(idOfUser);
+    board.removeUserFromBoard(idOfUser);
+    await this.boardRepository.save(board);
+    return board;
   }
 }

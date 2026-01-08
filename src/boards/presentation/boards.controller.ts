@@ -48,8 +48,29 @@ export class BoardController {
     return BoardMapper.fromEntity(board);
   }
 
+  @Patch(':id/addUser/:userId')
+  async addUserToBoard(@Param('id') boardId: string, @Param('userId') userId: string, @Body() body?: { role?: string }) {
+    const updatedBoard = await this.addUserToBoardUseCase.execute(boardId, userId, body?.role);
+
+    return BoardMapper.fromEntity(updatedBoard)
+  }
+
+  @Patch(':id/changeUserRole/:userId')
+  async editUserRoleInBoard(@Param('id') boardId: string, @Param('userId') userId: string, @Body() body: { role: string }) {
+    const updatedBoard = await this.changeUserRoleBoardUseCase.execute(boardId, userId, body.role)
+
+    return BoardMapper.fromEntity(updatedBoard)
+  }
+
   @Delete(':id')
   deleteBoard(@Param('id') id: string) {
     return this.deleteBoardUseCase.execute(id);
+  }
+
+  @Delete(':id/removeUserFromBoard/:userId')
+  async removeUserRoleFromBoard(@Param('id') boardId: string, @Param('userId') userId: string) {
+    const updatedBoard = await this.removeUserFromBoardUseCase.execute(boardId, userId)
+
+    return BoardMapper.fromEntity(updatedBoard)
   }
 }

@@ -15,16 +15,28 @@ export class MongoBoardRepository implements BoardRepositoryPort {
   ) {}
 
   async save(board: BoardEntity) {
-    const newBoard = await this.boardModel.create({
-      uuid: board.getUUID().getValue(),
-      title: board.getTitle().getValue(),
-      description: board.getDescription()?.getValue(),
-      uuidOfUserOwner: board.getUuidOfUserOwner().getValue(),
-      users: Array.from(board.getUsers(), ([uuid, role]) => ({ uuid, role: role.getValue()})),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
-    return BoardMongoMapper.toEntity(newBoard);
+    const boardDoc = await this.boardModel.findOne({ uuid: board.getUUID().getValue() });
+
+    if (!boardDoc) {
+      const newBoard = await this.boardModel.create({
+        uuid: board.getUUID().getValue(),
+        title: board.getTitle().getValue(),
+        description: board.getDescription()?.getValue(),
+        uuidOfUserOwner: board.getUuidOfUserOwner().getValue(),
+        users: Array.from(board.getUsers(), ([uuid, role]) => ({ uuid, role: role.getValue() })),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      return BoardMongoMapper.toEntity(newBoard);
+    }
+    boardDoc.title = board.getTitle().getValue();
+    boardDoc.description = board.getDescription()?.getValue();
+    boardDoc.uuidOfUserOwner = board.getUuidOfUserOwner().getValue();
+    boardDoc.users = Array.from(board.getUsers(), ([uuid, role]) => ({ uuid, role: role.getValue() }));
+    boardDoc.updatedAt = new Date();
+
+    await boardDoc.save();
+    return BoardMongoMapper.toEntity(boardDoc);
   }
 
   async findByUUID(uuid: string) {

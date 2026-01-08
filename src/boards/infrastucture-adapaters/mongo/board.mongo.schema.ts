@@ -1,5 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
+interface IUsersInBoard {
+  uuid: string;
+  role: string;
+}
+
 @Schema({ collection: 'boards' })
 export class BoardDocument {
   @Prop({ required: true, unique: true, index: true, type: String })
@@ -28,12 +33,7 @@ export class BoardDocument {
       }
     ],
   })
-  users:[
-    {
-      uuid: { required: true, type: String },
-      role: { required: true, type: String, enum: ['OWNER', 'ADMIN', 'USER', 'VIEWER'] },
-    }
-  ]
+  users: IUsersInBoard[]
 
   @Prop()
   readonly createdAt: Date;

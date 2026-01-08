@@ -16,6 +16,7 @@ export class AddUserToBoardUseCase {
     }
 
     board.addUserToBoard(idOfUser, role);
+    await this.boardRepository.save(board);
     return board;
   }
 }
